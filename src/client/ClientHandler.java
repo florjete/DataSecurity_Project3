@@ -20,13 +20,13 @@ public class ClientHandler {
         File file = session.getFile();
         byte[] fileData = readFile(file);
 
-        byte[] encryptedAESKey = RSAUtil.encrypt(session.getAesKey().getEncoded(), serverPublicKey);
-        byte[] encryptedFileData = AESUtil.encryptFile(fileData, session.getAesKey());
-        byte[] signature = RSAUtil.sign(fileData, session.getKeyPair().getPrivate());
+        //byte[] encryptedAESKey = RSAUtil.encrypt(session.getAesKey().getEncoded(), serverPublicKey);
+        //byte[] encryptedFileData = AESUtil.encryptFile(fileData, session.getAesKey());
+        //byte[] signature = RSAUtil.sign(fileData, session.getKeyPair().getPrivate());
 
-        out.writeObject(encryptedAESKey);
-        out.writeObject(encryptedFileData);
-        out.writeObject(signature);
+//        out.writeObject(encryptedAESKey);
+//        out.writeObject(encryptedFileData);
+//        out.writeObject(signature);
         out.writeObject(session.getKeyPair().getPublic());
 
         System.out.println("Upload completed.");
@@ -40,23 +40,23 @@ public class ClientHandler {
         out.writeObject(session.getKeyPair().getPublic());
 
         byte[] encryptedAESKey = (byte[]) in.readObject();
-        byte[] aesKeyBytes = RSAUtil.decrypt(encryptedAESKey, session.getKeyPair().getPrivate());
-        SecretKey aesKey = AESUtil.restoreAESKey(aesKeyBytes);
+//        byte[] aesKeyBytes = RSAUtil.decrypt(encryptedAESKey, session.getKeyPair().getPrivate());
+//        SecretKey aesKey = AESUtil.restoreAESKey(aesKeyBytes);
 
         byte[] encryptedFile = (byte[]) in.readObject();
         byte[] signature = (byte[]) in.readObject();
         PublicKey senderKey = (PublicKey) in.readObject();
 
-        byte[] fileData = AESUtil.decryptFile(encryptedFile, aesKey);
+//        byte[] fileData = AESUtil.decryptFile(encryptedFile, aesKey);
 
-        if (RSAUtil.verify(fileData, signature, senderKey)) {
-            try (FileOutputStream fos = new FileOutputStream(outputFilePath)) {
-                fos.write(fileData);
-            }
-            System.out.println("Download completed and verified.");
-        } else {
-            System.out.println("File verification failed.");
-        }
+//        if (RSAUtil.verify(fileData, signature, senderKey)) {
+//            try (FileOutputStream fos = new FileOutputStream(outputFilePath)) {
+//                fos.write(fileData);
+//            }
+//            System.out.println("Download completed and verified.");
+//        } else {
+//            System.out.println("File verification failed.");
+//        }
     }
 
     private static byte[] readFile(File file) throws IOException {
