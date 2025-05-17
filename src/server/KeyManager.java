@@ -1,4 +1,34 @@
 package server;
 
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+
 public class KeyManager {
+
+    private KeyPair rsaKeyPair;
+
+    public KeyManager() {
+        try {
+            // 🔑 Gjenerimi i çifteve të kyçeve RSA (2048-bit)
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+            keyGen.initialize(2048);
+            this.rsaKeyPair = keyGen.generateKeyPair();
+            System.out.println("✅ Çiftet e kyçeve RSA u gjeneruan me sukses!");
+        } catch (NoSuchAlgorithmException e) {
+            System.err.println("❌ Gabim gjatë gjenerimit të kyçeve: " + e.getMessage());
+        }
+    }
+
+    // ➡️ Kyçi publik i serverit
+    public PublicKey getPublicKey() {
+        return rsaKeyPair.getPublic();
+    }
+
+    // ➡️ Kyçi privat i serverit
+    public PrivateKey getPrivateKey() {
+        return rsaKeyPair.getPrivate();
+    }
 }
