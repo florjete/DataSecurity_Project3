@@ -14,18 +14,16 @@ public class FileStorage {
         }
     }
 
-
     public void saveFile(String filename, byte[] data) throws IOException {
         Path target = storageDir.resolve(filename);
         Files.write(target, data);
+        System.out.println("💾 Skedari u ruajt në: " + target);
     }
-
 
     public byte[] readFile(String filename) throws IOException {
         Path target = storageDir.resolve(filename);
         return Files.readAllBytes(target);
     }
-
 
     public boolean exists(String filename) {
         return Files.exists(storageDir.resolve(filename));

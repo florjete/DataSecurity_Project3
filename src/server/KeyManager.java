@@ -1,43 +1,27 @@
 package server;
 
-import javax.crypto.Cipher;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-
-
+import java.security.*;
 
 public class KeyManager {
-
-    private KeyPair rsaKeyPair;
+    private final KeyPair keyPair;
 
     public KeyManager() {
         try {
-            // 🔑 Gjenerimi i çifteve të kyçeve RSA (2048-bit)
+            System.out.println("🔑 Gjenerimi i çifteve të kyçeve RSA për serverin...");
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
             keyGen.initialize(2048);
-            this.rsaKeyPair = keyGen.generateKeyPair();
-            System.out.println("✅ Çiftet e kyçeve RSA u gjeneruan me sukses!");
+            this.keyPair = keyGen.generateKeyPair();
+            System.out.println("✅ Çelësat RSA u gjeneruan me sukses!");
         } catch (NoSuchAlgorithmException e) {
-            System.err.println("❌ Gabim gjatë gjenerimit të kyçeve: " + e.getMessage());
+            throw new RuntimeException("❌ Gabim gjatë gjenerimit të çelësave RSA: " + e.getMessage());
         }
     }
 
-    // ➡️ Kyçi publik i serverit
     public PublicKey getPublicKey() {
-        return rsaKeyPair.getPublic();
+        return keyPair.getPublic();
     }
 
-    // ➡️ Kyçi privat i serverit
     public PrivateKey getPrivateKey() {
-        return rsaKeyPair.getPrivate();
-    }
-
-    public byte[] decryptWithPrivateKey(byte[] data) throws Exception {
-        Cipher rsa = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
-        rsa.init(Cipher.DECRYPT_MODE, rsaKeyPair.getPrivate());
-        return rsa.doFinal(data);
+        return keyPair.getPrivate();
     }
 }

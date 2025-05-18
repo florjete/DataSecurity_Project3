@@ -1,4 +1,3 @@
-// TransferSession.java
 package models;
 
 import javax.crypto.SecretKey;
@@ -7,10 +6,10 @@ import java.net.Socket;
 import java.security.KeyPair;
 
 public class TransferSession {
-    private KeyPair keyPair;
-    private SecretKey aesKey;
-    private Socket socket;
-    private File file;
+    private final KeyPair keyPair;
+    private final SecretKey aesKey;
+    private final Socket socket;
+    private final File file;
 
     public TransferSession(KeyPair keyPair, SecretKey aesKey, Socket socket, File file) {
         this.keyPair = keyPair;
