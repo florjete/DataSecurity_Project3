@@ -4,54 +4,66 @@ import models.TransferSession;
 
 import javax.crypto.SecretKey;
 import java.io.File;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.security.KeyPair;
-import java.util.Scanner;
 
 public class Client {
     private static final String SERVER_ADDRESS = "localhost";
     private static final int SERVER_PORT = 5555;
 
     public static void main(String[] args) {
+        // Check for minimum arguments
+        if (args.length < 2) {
+            System.err.println("Përdorimi: java Client <command> <file>");
+            System.err.println("Komandat:");
+            System.err.println("  upload <file_path>    - Ngarko skedarin");
+            System.err.println("  download <file_name>  - Shkarko skedarin");
+            System.exit(1);
+        }
+
+        String command = args[0];
+        String fileArg = args[1];
+
         try {
             System.out.println("🔑 Gjenerimi i çifteve të kyçeve RSA...");
             KeyPair keyPair = RSAUtil.generateKeyPair();
             SecretKey aesKey = AESUtil.generateAESKey();
 
             System.out.println("🌐 Lidhja me serverin...");
-            Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
-            Scanner scanner = new Scanner(System.in);
+            try (Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
+                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
 
-            System.out.println("✅ Lidhja me serverin u krye me sukses.");
-            System.out.println("1️⃣ Zgjedhni opsionin: [1] Upload   [2] Download");
-            int option = scanner.nextInt();
-            scanner.nextLine(); // Pastrim i bufferit
+                System.out.println("✅ Lidhja me serverin u krye me sukses.");
 
-            if (option == 1) {
-                System.out.print("🗂 Shkruani path-in e skedarit për upload: ");
-                String filePath = scanner.nextLine();
-                File file = new File(filePath);
+                if (command.equalsIgnoreCase("upload")) {
+                    File file = new File(fileArg);
+                    if (!file.exists() || !file.isFile()) {
+                        System.err.println("❌ Skedari nuk ekziston: " + fileArg);
+                        return;
+                    }
 
-                if (!file.exists() || !file.isFile()) {
-                    System.err.println("❌ Skedari nuk ekziston.");
-                    return;
+                    TransferSession session = new TransferSession(keyPair, aesKey, socket, file);
+                    ClientHandler.upload(session, out, in);
+                    System.out.println("✅ Skedari u ngarkua me sukses: " + fileArg);
+
+                } else if (command.equalsIgnoreCase("download")) {
+                    String savePath = "client_storage/" + fileArg;
+                    new File("client_storage").mkdirs();
+
+                    TransferSession session = new TransferSession(keyPair, aesKey, socket, new File(fileArg));
+                    ClientHandler.download(session, out, in, savePath);
+                    System.out.println("✅ Skedari u shkarkua në: " + savePath);
+
+                } else {
+                    System.err.println("❌ Komandë e pavlefshme: " + command);
+                    System.exit(1);
                 }
-
-                TransferSession session = new TransferSession(keyPair, aesKey, socket, file);
-                ClientHandler.upload(session);
-
-            } else if (option == 2) {
-                System.out.print("📝 Shkruani emrin e skedarit për download: ");
-                String fileName = scanner.nextLine();
-
-                TransferSession session = new TransferSession(keyPair, aesKey, socket, new File(fileName));
-                ClientHandler.download(session, fileName);
-
-            } else {
-                System.out.println("❌ Opsion i pavlefshëm!");
             }
-
         } catch (Exception e) {
+            System.err.println("❌ Gabim në klient: " + e.getMessage());
             e.printStackTrace();
         }
     }
