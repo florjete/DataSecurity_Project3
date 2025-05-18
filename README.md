@@ -44,7 +44,7 @@ src/
 
 ```cmd
 cd src
-javac server\*.java client\*.java models\*.java utils\*.java
+javac server\*.java client\*.java models\*.java
 ```
 
 ### 2️⃣ **Startimi i Serverit**
