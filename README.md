@@ -53,7 +53,31 @@ javac server\*.java client\*.java models\*.java utils\*.java
 cd src
 java server.Server
 ```
+**Porta default është 5050.**  
+Nëse dëshironi të përdorni një port tjetër, përdorni formatin e mëposhtëm:  
 
+```cmd
+java server.Server <porti>
+```
+
+**Shembuj:**  
+```cmd
+java server.Server 9090       # Përdor portin 9090
+java server.Server 8080       # Përdor portin 8080
+```
+
+---
+
+## Shembull i Përdorimit:
+
+```cmd
+java server.Server         # Porta default 5050
+java server.Server 9090    # Porta specifike 9090
+java client.Client upload C:\path	oile.txt
+java client.Client download file.txt
+```
+
+---
 ### 3️⃣ **Startimi i Klientit**
 
 ```cmd
