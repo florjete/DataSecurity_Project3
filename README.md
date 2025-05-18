@@ -168,7 +168,7 @@ if (isValid) {
     System.out.println("❌ Nënshkrimi është i pavlefshëm!");
 }
 ```
-* **Klasa KeyManager ** është një klasë që menaxhon gjenerimin dhe ruajtjen e çelësave publik dhe privat (RSA) për serverin.
+* **Klasa KeyManager** është një klasë që menaxhon gjenerimin dhe ruajtjen e çelësave publik dhe privat (RSA) për serverin.
 ```cmd
 // Krijimi i një instance të KeyManager
 KeyManager keyManager = new KeyManager();
