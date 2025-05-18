@@ -127,6 +127,7 @@ Fillimisht kryhet ngarkimi i një skedari specifik duke përdorur path-in përka
 ![image](https://github.com/user-attachments/assets/85af8610-9ef5-4cad-91d0-88539f8b5d00)
 
 Te gjitha komandat jane ekzekutuar me sukses
+
 ---
 
 ## Aspektet e Sigurisë:
