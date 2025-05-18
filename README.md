@@ -108,6 +108,26 @@ java client.Client download file.txt
 * Gjenerohen logje për çdo transaksion për qëllime auditimi dhe debug.
 
 ---
+## Rastet e ekzekutimit:
+
+### Hapi 1: Kompajlimi i Projektit**
+Fillimisht, kryhet kompajlimi i projektit për të siguruar që të gjitha klasat dhe paketat janë të përpiluara saktë.
+![image](https://github.com/user-attachments/assets/6ecfe6be-f91a-40e0-b158-d519858ed88d)
+
+### Hapi 2: Startimi i Serverit
+Serveri nis në portin 5555 dhe fillon të pranojë lidhje nga klientët. Ndërkohë, serveri gjeneron mesazhe informative mbi gjendjen dhe veprimet e klientit.
+
+![image](https://github.com/user-attachments/assets/aaf0e010-1c69-49cd-a753-feccecd589b7)
+
+### Hapi 3: Startimi i Klientit
+Në një terminal tjetër, ekzekutohet aplikacioni i klientit. Gjatë nisjes, aplikacioni paraqet udhëzime mbi përdorimin korrekt të komandave dhe argumenteve përkatëse.![image](https://github.com/user-attachments/assets/6d5e07ef-c4b4-4e92-a4ba-455407c0fd0d)
+
+### Hapi 4: Ngarkimi dhe Shkarkimi i Skedarit
+Fillimisht kryhet ngarkimi i një skedari specifik duke përdorur path-in përkatës në direktorinë server_storage. Më pas, për qëllime testimi, i njëjti skedar shkarkohet.
+![image](https://github.com/user-attachments/assets/85af8610-9ef5-4cad-91d0-88539f8b5d00)
+
+Te gjitha komandat jane ekzekutuar me sukses
+---
 
 ## Aspektet e Sigurisë:
 
