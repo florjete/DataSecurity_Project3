@@ -117,8 +117,48 @@ java client.Client download file.txt
 * **SHA-256 Hashing** përdoret për të verifikuar integritetin e skedarëve pas shkarkimit.
 
 ---
+## Perdorimi i kodit per siguri:
+* **Klasa AESUtil** ofron metoda ndihmëse për gjenerimin e çelësave AES, enkriptimin dhe dekriptimin e të dhënave duke përdorur algoritmin AES/GCM/NoPadding, i cili është i njohur për siguri të lartë dhe verifikim të integritetit.
+```cmd
+// Gjenerimi i çelësit AES
+SecretKey aesKey = AESUtil.generateAESKey();
 
+// Enkriptimi i një mesazhi
+byte[] encryptedData = AESUtil.encrypt(aesKey.getEncoded(), "Pershendetje Botë!".getBytes());
 
+// Dekriptimi i mesazhit
+byte[] decryptedData = AESUtil.decrypt(aesKey.getEncoded(), encryptedData);
+
+// Shfaqja e mesazhit të dekriptuar
+System.out.println(new String(decryptedData)); // Rezultati: Pershendetje Botë!
+```
+* **Klasa DigitalSignature** është një klasë që ofron funksionalitete për nënshkrimin dixhital të të dhënave dhe verifikimin e nënshkrimeve duke përdorur algoritmin SHA-256 me RSA.
+```cmd
+// Nënshkrimi i të dhënave
+byte[] data = "Pershendetje Botë!".getBytes();
+byte[] signature = DigitalSignature.sign(data, privateKey);
+
+// Verifikimi i nënshkrimit
+boolean isValid = DigitalSignature.verify(data, signature, publicKey);
+
+if (isValid) {
+    System.out.println("✅ Nënshkrimi është valid!");
+} else {
+    System.out.println("❌ Nënshkrimi është i pavlefshëm!");
+}
+```
+* **Klasa KeyManager ** është një klasë që menaxhon gjenerimin dhe ruajtjen e çelësave publik dhe privat (RSA) për serverin.
+```cmd
+// Krijimi i një instance të KeyManager
+KeyManager keyManager = new KeyManager();
+
+// Marrja e çelësave publik dhe privat
+PublicKey publicKey = keyManager.getPublicKey();
+PrivateKey privateKey = keyManager.getPrivateKey();
+
+```
+
+---
 ## Autorët:
 
 * **Floridë Suka** 
